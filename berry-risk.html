@@ -1014,12 +1014,32 @@
   observeReveals();
 
   /* ── TAB SWITCHING ───────────────────────── */
-  function switchTab(n) {
+  const TAB_HASHES = ['crop-risk', 'pilot'];
+
+  function showTab(n) {
     document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('on', i === n));
     document.querySelectorAll('.n-link[onclick]').forEach((b, i) => b.classList.toggle('on', i === n));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(observeReveals, 80);
   }
+
+  function switchTab(n) {
+    showTab(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.pushState(null, '', '#' + TAB_HASHES[n]);
+  }
+
+  // Browser back / forward
+  window.addEventListener('hashchange', () => {
+    const idx = TAB_HASHES.indexOf(location.hash.slice(1));
+    showTab(idx >= 0 ? idx : 0);
+    window.scrollTo({ top: 0 });
+  });
+
+  // Init from URL on load
+  (function () {
+    const idx = TAB_HASHES.indexOf(location.hash.slice(1));
+    showTab(idx >= 0 ? idx : 0);
+  })();
 
   /* ── CHART TABS ──────────────────────────── */
   function switchChart(id, btn) {
