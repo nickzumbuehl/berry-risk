@@ -855,7 +855,7 @@
   <div class="rule"></div>
 
   <!-- STEPS -->
-  <section class="sec" id="pilot" style="padding-top:52px;">
+  <section class="sec" id="pilot-steps" style="padding-top:52px;">
     <span class="lbl r">What the pilot includes</span>
 
     <div class="steps-grid r" style="transition-delay:.1s">
@@ -1043,10 +1043,11 @@
     window.scrollTo({ top: 0 });
   });
 
-  // Init from URL on load
+  // Init from URL on load — setTimeout lets browser finish its anchor scroll, then we override
   (function () {
     const idx = TAB_HASHES.indexOf(location.hash.slice(1));
     showTab(idx >= 0 ? idx : 0);
+    if (idx >= 0) setTimeout(() => window.scrollTo(0, 0), 0);
   })();
 
   /* ── CHART TABS ──────────────────────────── */
